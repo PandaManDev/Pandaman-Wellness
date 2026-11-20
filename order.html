@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
   <style>
-    :root{color-scheme:dark;--bg:#0b0718;--surface:#17102c;--text:#fff8ff;--muted:#cfc1dc;--accent:#c86cff;--focus:#ffe58a;--border:#ffffff25;box-sizing:border-box}
+    :root{color-scheme:dark;--bg:#0b0718;--text:#fff8ff;--muted:#cfc1dc;--accent:#c86cff;--focus:#ffe58a;--border:#ffffff25;box-sizing:border-box}
     *,*:before,*:after{box-sizing:inherit}body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(circle at 15% 0,#32156a 0,transparent 34rem),var(--bg);color:var(--text);font:1rem/1.5 'DM Sans',sans-serif}.container{width:min(100% - 2rem,48rem);margin:auto}a{color:#e0a6ff}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:3px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.5rem 0;border-bottom:1px solid var(--border)}.brand{font:1.6rem Pacifico,cursive;color:var(--text);text-decoration:none}.panel{margin:2rem 0;padding:clamp(1rem,4vw,2rem);border:1px solid var(--border);border-radius:1rem;background:#17102cee;box-shadow:0 1rem 3rem #0003}h1{margin-top:0;font-size:clamp(2rem,5vw,3rem);line-height:1.15}.muted{color:var(--muted)}.field{display:grid;gap:.45rem;margin:1rem 0}label{font-weight:600}input,textarea{width:100%;padding:.8rem;border:1px solid #ffffff3b;border-radius:.65rem;background:#0d091a;color:var(--text);font:inherit}textarea{min-height:9rem;resize:vertical}button{padding:.8rem 1.15rem;border:0;border-radius:.65rem;background:var(--accent);color:#160b22;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.6;cursor:wait}.notice{min-height:1.5rem}.notice.error{color:#ffabb6}.notice.success{color:#b4f4ce}.small{font-size:.9rem}.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}.footer{padding:1rem 0 2rem;color:var(--muted);font-size:.9rem}@media(max-width:520px){.topbar{align-items:flex-start;flex-direction:column}}
   </style>
 </head>
@@ -20,12 +20,12 @@
     <main>
       <section class="panel" aria-labelledby="page-title">
         <h1 id="page-title">Send an order request</h1>
-        <p class="muted">Tell us what you’re interested in and how to reach you. A staff member will follow up to confirm availability and details. Submitting this form is a request, not a confirmed order.</p>
+        <p class="muted">Provide your contact details and the item you want. A staff member will follow up to confirm availability and details. Submitting this form is a request, not a confirmed order.</p>
         <p id="status" class="notice" role="status" aria-live="polite"></p>
         <form id="order-request" novalidate>
           <div class="field"><label for="customer-name">Your name</label><input id="customer-name" name="customer_name" autocomplete="name" maxlength="120" required></div>
-          <div class="field"><label for="customer-contact">Phone number or email</label><input id="customer-contact" name="customer_contact" autocomplete="email" maxlength="200" required aria-describedby="contact-help"><span id="contact-help" class="small muted">Provide one way for staff to contact you.</span></div>
-          <div class="field"><label for="details">What would you like to request?</label><textarea id="details" name="details" maxlength="5000" required placeholder="List products and quantities you’re interested in."></textarea></div>
+          <div class="field"><label for="customer-contact">Phone number</label><input id="customer-contact" name="customer_contact" type="tel" autocomplete="tel" maxlength="200" required aria-describedby="contact-help"><span id="contact-help" class="small muted">Include a country code if needed.</span></div>
+          <div class="field"><label for="details">Item(s) you want</label><textarea id="details" name="details" maxlength="5000" required placeholder="Your selected item will appear here. Add quantities or other items if needed."></textarea></div>
           <div class="hp" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
           <p class="small muted">Please don’t include payment card details or sensitive personal information. We’ll use your contact details only to respond to this request.</p>
           <button id="submit-order" type="submit">Send request</button>
@@ -38,17 +38,23 @@
   <script>
     const SUPABASE_URL = 'https://rilcamphpjcaebajquyo.supabase.co';
     const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_XkhO-mTjYgsB5ClCixI1qw_QYL534pV';
-    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    // Use an anonymous-only client so a staff session in this browser cannot cause public requests to use authenticated RLS policies.
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false,storageKey:'pandaman-public-orders'}
+    });
     const form = document.getElementById('order-request');
     const status = document.getElementById('status');
     const submitButton = document.getElementById('submit-order');
+    const itemField = form.elements.details;
+    const selectedItem = new URLSearchParams(window.location.search).get('item');
+    if (selectedItem) itemField.value = selectedItem.slice(0, 5000);
     form.addEventListener('submit', async event => {
       event.preventDefault();
       if (!form.reportValidity()) return;
       if (form.elements.website.value) return;
       const customerName = form.elements.customer_name.value.trim();
       const customerContact = form.elements.customer_contact.value.trim();
-      const details = form.elements.details.value.trim();
+      const details = itemField.value.trim();
       if (!customerName || !customerContact || !details) {
         status.className = 'notice error';
         status.textContent = 'Please complete each field.';
@@ -57,13 +63,7 @@
       submitButton.disabled = true;
       status.className = 'notice';
       status.textContent = 'Sending your request…';
-      const {error} = await db.from('orders').insert({
-        customer_name:customerName,
-        customer_contact:customerContact,
-        details,
-        status:'new',
-        created_by:null
-      });
+      const {error} = await db.from('orders').insert({customer_name:customerName,customer_contact:customerContact,details,status:'new',created_by:null});
       submitButton.disabled = false;
       if (error) {
         status.className = 'notice error';

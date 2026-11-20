@@ -9,7 +9,7 @@ A responsive, accessible single-page menu for Pandaman Wellness.
 - Keyboard-visible focus states and a skip-to-content link
 - Reduced-motion support for visitors who prefer less animation
 - Clear call and text ordering actions using `tel:` and `sms:` links
-- Lightweight, dependency-free implementation with styles and scripts contained in `index.html`
+- Lightweight implementation with styles and scripts contained in `index.html`
 
 ## Getting started
 
@@ -21,16 +21,22 @@ python3 -m http.server 8000
 
 Then visit <http://localhost:8000>.
 
+## Weather dashboard
+
+A standalone weather dashboard is available at `weather.html`. It fetches location and forecast data from the public [Open-Meteo API](https://open-meteo.com/), so no API key is required. Search for a city or optionally allow browser location access to view current conditions, an hourly forecast, and a five-day outlook.
+
+Run the local server above and visit <http://localhost:8000/weather.html>. Browser geolocation requires a secure context (HTTPS or localhost); city search works without granting location permission.
+
 ## Customization
 
 - Update menu items and prices in the menu cards in `index.html`.
 - Change the phone number in the `tel:` and `sms:` links.
-- Adjust the color tokens at the top of the stylesheet in `:root`.
+- Adjust the color tokens at the top of each page's stylesheet.
 - Replace the emoji mark with a brand image if one becomes available. Add meaningful alternative text if the image conveys information.
 
-## Accessibility notes
+## Accessibility and publishing notes
 
-The page includes an age-confirmation dialog, but this is a front-end convenience rather than legal or regulatory verification. Confirm that the business's age, licensing, product, and ordering requirements are satisfied before publishing. Menu availability and prices should be verified before each order.
+The wellness menu's age-confirmation dialog is a front-end convenience rather than legal or regulatory verification. Confirm business age, licensing, product, and ordering requirements before publishing. The weather dashboard supports keyboard focus, a status region for loading/errors, and responsive layouts. Weather forecasts are informational and may change.
 
 ## License
 

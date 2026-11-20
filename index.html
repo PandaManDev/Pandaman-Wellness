@@ -1,210 +1,72 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pandaman Wellness Menu</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;800&display=swap">
-<style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#07020f;--card:#12062a;--line:#a63cff;--glow:#c06bff;--txt:#f4eaff;--mut:#b99ae0;--pill:#1d0a3d}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#2a0a55 0,var(--bg) 60%);color:var(--txt);font-family:Georgia,'Trebuchet MS',sans-serif;padding:16px}
-.wrap{max-width:900px;margin:0 auto}
-.notice{background:linear-gradient(90deg,#7a18d6,#c026d3);border-radius:14px;padding:12px 16px;text-align:center;font-weight:700;box-shadow:0 0 22px #a63cff99;margin-bottom:18px}
-header{text-align:center;margin-bottom:20px}
-.crown{font-size:34px}
-h1{margin:0;font-size:clamp(38px,9vw,70px);font-style:italic;background:linear-gradient(180deg,#fff,#c77dff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px #a63cff)}
-.sub{color:#d36bff;letter-spacing:.15em;font-size:12px;font-weight:700}
-section{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:14px 16px 16px;margin-bottom:16px;box-shadow:0 0 18px #a63cff66,inset 0 0 18px #a63cff33}
-h2{margin:0 0 10px;text-align:center;font-size:30px;font-style:italic;color:#fff;text-shadow:0 0 12px var(--glow)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.two section{margin:0}
-.flower div{text-align:center;font-weight:700}
-.flower small{display:block;color:var(--mut);font-weight:400}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0}
-.row span small{display:block;color:var(--mut);font-size:12.5px;font-weight:400;line-height:1.35}
-.row span{font-weight:700;font-size:17px}
-.p{background:var(--pill);border:2px solid var(--line);border-radius:12px;padding:4px 14px;font-weight:800;font-size:20px;min-width:70px;text-align:center;box-shadow:0 0 10px #a63cff88;white-space:nowrap}
-.flower .p{display:inline-block;margin-top:6px}
-.choose{text-align:center;color:#ffd6ff;font-size:14px;margin:0 0 8px}
-.chips{display:flex;gap:8px;justify-content:center;margin-bottom:6px;flex-wrap:wrap}
-.chips b{border:1.5px solid var(--line);border-radius:20px;padding:3px 14px;background:var(--pill);font-size:14px}
-.sep{border-top:1px dashed #a63cff88;margin:6px 0}
-footer{text-align:center;letter-spacing:.35em;color:#d36bff;font-weight:700;font-size:12px;margin-top:20px}
-body{background:radial-gradient(ellipse at 20% 0,#3d0f7a 0,transparent 55%),radial-gradient(ellipse at 90% 40%,#5a0f8f 0,transparent 50%),var(--bg);background-attachment:fixed;overflow-x:hidden}
-body::before,body::after{content:'';position:fixed;width:60vmax;height:60vmax;border-radius:50%;filter:blur(70px);opacity:.35;z-index:0;pointer-events:none;animation:drift 18s ease-in-out infinite alternate}
-body::before{background:#9d2bff;top:-20vmax;left:-20vmax}
-body::after{background:#e040fb;bottom:-25vmax;right:-20vmax;animation-delay:-9s}
-@keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.15)}}
-.wrap{position:relative;z-index:1}
-.notice{animation:pulse 2.4s ease-in-out infinite;letter-spacing:.04em;border:2px solid #f0b3ff;text-shadow:0 0 8px #fff8}
-@keyframes pulse{50%{box-shadow:0 0 40px #e040fbcc,0 0 6px #fff6}}
-h1{font-size:clamp(44px,11vw,84px);line-height:1;padding:4px 0;background:linear-gradient(100deg,#fff 0,#e9b6ff 30%,#b44dff 55%,#fff 75%,#d98cff 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;animation:shine 6s linear infinite}
-@keyframes shine{to{background-position:200% center}}
-.crown{filter:drop-shadow(0 0 14px #e040fb);animation:float 3s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-6px)}}
-section{background:linear-gradient(160deg,#1a0838ee,#0b0318ee);backdrop-filter:blur(6px);transition:transform .25s,box-shadow .25s;border-image:none;border-color:#b24dff}
-section:hover{transform:translateY(-3px);box-shadow:0 0 32px #c06bffaa,inset 0 0 22px #a63cff55}
-h2::before{content:'\1F33F  ';font-size:.6em;filter:hue-rotate(250deg) saturate(2)}
-h2::after{content:'  \1F33F';font-size:.6em;filter:hue-rotate(250deg) saturate(2)}
-.p{background:linear-gradient(135deg,#2a0d57,#4a1296);color:#fff;text-shadow:0 0 8px #e9b6ff;transition:transform .2s}
-.row:hover .p,.flower div:hover .p{transform:scale(1.08)}
-.chips b{box-shadow:0 0 10px #a63cff88;color:#ffd6ff}
-.sub{text-shadow:0 0 10px #d36bff}
-footer{text-shadow:0 0 12px #d36bff}
-@media(prefers-reduced-motion:reduce){*,body::before,body::after{animation:none!important;transition:none!important}}
-.gate{position:fixed;inset:0;z-index:99;background:radial-gradient(ellipse at center,#2a0a55,#07020f 70%);display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
-.gate,.gate.hide{display:none!important}
-.gbox{max-width:420px;border:2px solid var(--line);border-radius:24px;padding:28px 22px;background:#12062aee;box-shadow:0 0 40px #a63cffaa,inset 0 0 24px #a63cff44}
-.gbox h3{font-size:34px;font-style:italic;margin:6px 0;text-shadow:0 0 14px var(--glow)}
-.gbox p{color:var(--mut);margin:8px 0 18px}
-.gbtn{font:inherit;font-weight:800;font-size:17px;color:#fff;border:2px solid #f0b3ff;border-radius:14px;padding:10px 22px;margin:4px;cursor:pointer;background:linear-gradient(135deg,#7a18d6,#c026d3);box-shadow:0 0 16px #a63cffaa}
-.gbtn.no{background:var(--pill);border-color:var(--line)}
-body{font-family:'Poppins','Trebuchet MS',sans-serif}
-h1,h2,.gbox h3{font-family:'Pacifico','Brush Script MT',cursive;font-style:normal;font-weight:400}
-h1{font-size:clamp(46px,12vw,92px)}
-h2{font-size:36px;margin-bottom:12px}
-.wrap{max-width:960px}
-.panda{font-size:80px;width:150px;height:150px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(circle,#4a1296,#12062a 70%);border:3px solid var(--line);box-shadow:0 0 40px #c06bff,inset 0 0 30px #a63cff88;animation:float 3s ease-in-out infinite}
-.hero-crown{font-size:38px;margin-bottom:-14px;position:relative;z-index:2;filter:drop-shadow(0 0 12px #e040fb)}
-.tag{display:inline-block;margin-top:12px;padding:5px 18px;border:1.5px solid var(--line);border-radius:20px;background:#a63cff22;color:#f0c8ff;font-size:13px;letter-spacing:.2em;font-weight:600}
-.leaf{position:fixed;bottom:-50px;font-size:26px;opacity:.45;z-index:0;pointer-events:none;filter:hue-rotate(250deg) saturate(2);animation:rise 16s linear infinite}
-@keyframes rise{to{transform:translateY(-120vh) rotate(360deg)}}
-.row{border-bottom:1px solid #a63cff33}
-.row:last-child{border-bottom:0}
-.row span{font-weight:600}
-.p{font-size:21px;font-weight:800;border-color:#d27bff}
-.flower div{background:#ffffff08;border:1px solid #a63cff66;border-radius:16px;padding:14px 6px;transition:transform .2s,background .2s}
-.flower div:hover{transform:translateY(-3px);background:#a63cff22}
-.flower small{font-size:12px}
-.sub{font-size:11px;line-height:1.7}
-footer{margin-bottom:24px}
-nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 18px}
-nav a{color:#f0c8ff;text-decoration:none;font-weight:600;padding:8px 18px;border:1.5px solid var(--line);border-radius:22px;background:#12062acc;transition:.2s}
-nav a:hover{box-shadow:0 0 14px #c06bff}
-nav a.on{background:linear-gradient(135deg,#7a18d6,#c026d3);color:#fff;border-color:#f0b3ff;box-shadow:0 0 16px #a63cffaa}
-.page{display:none}.page.on{display:block}
-.stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-width:420px;margin:14px auto}
-.st{aspect-ratio:1;border-radius:50%;border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;background:#ffffff08}
-.st.f{border-style:solid;background:radial-gradient(circle,#7a18d6,#2a0d57);box-shadow:0 0 14px #c06bff}
-.txt{color:var(--mut);line-height:1.7;text-align:center;margin:6px 0}
-.btns{text-align:center;margin-top:8px}
-</style></head><body>
-<div class="gate" id="gate"><div class="gbox"><div class="crown">🐼</div><h3>Pandaman Wellness</h3><p id="gmsg">You must be 21 or older to view this menu. Are you 21+?</p><div id="gbtns"><button class="gbtn" id="yes">Yes, I’m 21+</button><button class="gbtn no" id="no">No</button></div></div></div>
-<div class="wrap">
-<div class="notice">🎁 You will get a free pre-roll after 10 purchases!</div>
-<section style="text-align:center;padding:12px"><p class="choose" style="margin:0 0 6px;font-weight:600">Call or text to order</p><a class="gbtn" href="tel:+14017539860" style="text-decoration:none;display:inline-block;font-size:20px">📞 (401) 753-9860</a> <a class="gbtn no" href="sms:+14017539860" style="text-decoration:none;display:inline-block;font-size:20px">💬 Text</a></section>
-<span class="leaf" style="left:6%">🌿</span><span class="leaf" style="left:24%;animation-delay:-5s">🌿</span><span class="leaf" style="left:46%;animation-delay:-10s">🌿</span><span class="leaf" style="left:68%;animation-delay:-3s">🌿</span><span class="leaf" style="left:88%;animation-delay:-8s">🌿</span>
-<header><div class="hero-crown">👑</div><div class="panda">🐼</div><h1>Pandaman Wellness</h1><div class="tag">PREMIUM CANNABIS PRODUCTS</div><div class="sub" style="margin-top:14px">FLOWER · PRE-ROLLS · CARTS · CONCENTRATE · DISPOSABLES · EDIBLES · TINCTURE</div></header>
-<nav id="nav"><a href="#menu">🌿 Menu</a><a href="#about">🐼 About</a><a href="#contact">📞 Contact</a></nav>
-
-<div class="page on" id="menu">
-<section><h2>Flower</h2><div class="grid flower">
-<div>Eighth<small>(3.5 g)</small><span class="p">$20</span></div>
-<div>Quarter<small>(7 g)</small><span class="p">$80</span></div>
-<div>Half Ounce<small>(14 g)</small><span class="p">$120</span></div>
-<div>Ounce<small>(28 g)</small><span class="p">$180</span></div></div></section>
-
-<div class="two">
-<section><h2>Pre-Rolls</h2>
-<div class="row"><span>1 Pre-Roll</span><b class="p">$15</b></div>
-<div class="row"><span>2 Pre-Rolls</span><b class="p">$30</b></div>
-<div class="row"><span>3 Pre-Rolls</span><b class="p">$60</b></div></section>
-<section><h2>Carts</h2>
-<div class="row"><span>1g Cart</span><b class="p">$20</b></div>
-<div class="row"><span>2g Cart</span><b class="p">$45</b></div></section>
-</div>
-
-<section style="margin-top:16px"><h2>Concentrate</h2>
-<p class="choose">Your choice of style:</p>
-<div class="chips"><b>Batter</b><b>Shatter</b><b>Caviar</b></div>
-<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
-<div class="row"><span>1g</span><b class="p">$30</b></div>
-<div class="row"><span>2g</span><b class="p">$60</b></div>
-<div class="row"><span>3g</span><b class="p">$80</b></div></div></section>
-
-<div class="two">
-<section><h2>Disposables</h2>
-<div class="row"><span>Disposable Vape<small>1 gram</small></span><b class="p">$80</b></div></section>
-<section><h2>Tincture</h2>
-<div class="row"><span>Tincture<small>1,000 mg</small></span><b class="p">$40</b></div></section>
-</div>
-
-<section style="margin-top:16px"><h2>Edibles</h2>
-<div class="row"><span>Gummies<small>300 mg pack · 10 gummies per pack · 30 mg per gummy</small></span><b class="p">$26</b></div><div class="sep"></div>
-<div class="row"><span>Milk Chocolate Bar<small>1,000 mg whole bar · 100 mg per piece</small></span><b class="p">$62 ea</b></div><div class="sep"></div>
-<div class="row"><span>Drinks<small>100 mg each</small></span><b class="p">$22 ea</b></div></section>
-
-<section><h2>Accessories</h2>
-<div class="row"><span>Bic Lighters</span><b class="p">$5 ea</b></div></section>
-
-</div>
-<div class="page" id="about"><section><h2>About Us</h2>
-<div class="panda" style="width:110px;height:110px;font-size:56px">🐼</div>
-<p class="txt">Pandaman Wellness brings you premium cannabis products: flower, pre-rolls, carts, concentrate, disposables, edibles and tinctures.</p>
-<p class="txt">Browse the menu, pick what you like, then call or text to order. Every 10th purchase earns you a free pre-roll.</p></section></div>
-<div class="page" id="contact"><section><h2>Contact</h2>
-<p class="txt">Ready to order? Call or text us anytime.</p>
-<div class="btns"><a class="gbtn" href="tel:+14017539860" style="text-decoration:none;display:inline-block;font-size:22px">📞 (401) 753-9860</a> <a class="gbtn no" href="sms:+14017539860" style="text-decoration:none;display:inline-block;font-size:22px">💬 Text</a></div>
-<p class="txt" style="margin-top:14px">Tell us what you want from the menu, and we will confirm your order.</p></section></div>
-<footer>PREMIUM CANNABIS PRODUCTS</footer>
-</div>
-<script>
-(function(){var g=document.getElementById('gate');
-try{if(sessionStorage.getItem('age21')==='1'){g.classList.add('hide');}}catch(e){}
-document.getElementById('yes').onclick=function(){try{sessionStorage.setItem('age21','1');}catch(e){}g.classList.add('hide');};
-document.getElementById('no').onclick=function(){document.getElementById('gmsg').textContent='Sorry, you must be 21 or older to enter.';document.getElementById('gbtns').style.display='none';};
-})();
-</script>
-<script>
-(function(){
-var names=['menu','about','contact'];
-function show(){var h=location.hash.replace('#','');if(names.indexOf(h)<0)h='menu';
-names.forEach(function(n){document.getElementById(n).classList.toggle('on',n===h);});
-var a=document.querySelectorAll('#nav a');for(var i=0;i<a.length;i++)a[i].classList.toggle('on',a[i].getAttribute('href')==='#'+h);window.scrollTo(0,0);}
-window.addEventListener('hashchange',show);show();
-return;var c=0;
-var box=document.getElementById('stamps');
-function draw(){box.innerHTML='';for(var i=0;i<10;i++){var d=document.createElement('div');d.className='st'+(i<c?' f':'');d.textContent=i<c?'\uD83D\uDC3C':(i+1);box.appendChild(d);}
-document.getElementById('smsg').textContent=c>=10?'\uD83C\uDF89 You earned a free pre-roll! Mention it when you order.':c+' of 10 stamps';}
-window.__draw=function(n){c=n;draw();};
-
-
-
-draw();
-})();
-</script>
-<script>
-(async function(){return;
-var note=document.getElementById('note');
-try{
-if(!window.claude)throw 0;
-var u=await claude.use('user'),db=await claude.use('db');
-if(!u||!db)throw 0;
-var id=await u.id();if(!id)throw 0;
-var admin=await u.canEdit();
-try{await db.doc('members/'+id).set({joined:Date.now()});}catch(e){}
-note.textContent=admin?'Signed in as staff.':'Signed in. Staff will stamp your card when you buy.';
-db.doc('stamps/'+id).onSnapshot(function(s){var d=s.data();window.__draw((d&&d.count)||0);});
-if(!admin)return;
-var counts={},ids=[];
-document.getElementById('admin').style.display='block';
-var list=document.getElementById('list');
-async function render(){
-var ps=ids.length?await u.profiles(ids):{};
-list.innerHTML='';
-ids.forEach(function(i){
-var n=counts[i]||0;
-var row=document.createElement('div');row.className='row';
-var nm=document.createElement('span');nm.textContent=((ps[i]&&ps[i].name)||'Customer')+' ('+n+'/10)';
-var bx=document.createElement('div');
-function mk(t,v,cls){var b=document.createElement('button');b.className='gbtn'+(cls?' no':'');b.style.padding='4px 12px';b.style.fontSize='15px';b.textContent=t;b.onclick=function(){db.doc('stamps/'+i).set({count:v}).catch(function(){alert('Could not save stamp.');});};bx.appendChild(b);}
-mk('+ Stamp',Math.min(10,n+1));mk('Undo',Math.max(0,n-1),1);mk('Reset',0,1);
-row.appendChild(nm);row.appendChild(bx);list.appendChild(row);});
-if(!ids.length)list.innerHTML='<p class="txt">No customers have signed in yet.</p>';
-}
-db.collection('members').onSnapshot(function(s){ids=s.docs.map(function(d){return d.id;});render();});
-db.collection('stamps').onSnapshot(function(s){counts={};s.docs.forEach(function(d){counts[d.id]=(d.data()||{}).count||0;});render();});
-}catch(e){note.textContent='Sign in with your account to see your rewards card.';}
-})();
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pandaman Wellness premium cannabis product menu. Call or text to order.">
+  <meta name="theme-color" content="#120b2e">
+  <title>Pandaman Wellness | Premium Cannabis Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:dark;--bg:#0b0718;--surface:#17102c;--surface-2:#21163d;--text:#fff8ff;--muted:#cfc1dc;--accent:#c86cff;--accent-2:#7b4dff;--focus:#ffe58a;--radius:1.25rem;box-sizing:border-box}
+    *,*:before,*:after{box-sizing:inherit}
+    html{scroll-behavior:smooth;scroll-padding-top:1rem}
+    body{margin:0;min-width:320px;background:radial-gradient(circle at 15% 0,#32156a 0,transparent 34rem),radial-gradient(circle at 100% 30%,#29134e 0,transparent 30rem),var(--bg);color:var(--text);font:400 1rem/1.6 "DM Sans",system-ui,sans-serif}
+    a{color:inherit}.container{width:min(100% - 2rem,68rem);margin-inline:auto}
+    .skip-link{position:absolute;left:1rem;top:-5rem;background:var(--focus);color:#160b22;padding:.7rem 1rem;border-radius:.5rem;font-weight:700;z-index:20}.skip-link:focus{top:1rem}
+    .age-gate{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:1rem;background:#090513eF}.age-card{width:min(100%,28rem);padding:2rem;text-align:center;background:var(--surface);border:1px solid #b968ff;border-radius:var(--radius);box-shadow:0 1rem 5rem #0008}.age-card h2{margin:.5rem 0;font-family:Pacifico,cursive;font-size:2.2rem;font-weight:400}.age-card p{color:var(--muted)}
+    .hidden{display:none!important}.button{display:inline-flex;align-items:center;justify-content:center;min-height:2.9rem;padding:.65rem 1.15rem;border:1px solid transparent;border-radius:.75rem;background:linear-gradient(135deg,var(--accent-2),var(--accent));color:white;text-decoration:none;font:inherit;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s}.button:hover{transform:translateY(-2px);box-shadow:0 .5rem 1.5rem #b95dff55}.button.secondary{background:transparent;border-color:#a96be8;color:#f2dfff}.button:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    .promo{margin:1rem 0;padding:.75rem 1rem;border:1px solid #e6a3ff88;border-radius:.8rem;background:#8b42c933;text-align:center;font-weight:700}.promo span{color:#ffe49b}
+    header{text-align:center;padding:2.5rem 0 1.5rem}.eyebrow{margin:0;color:#e5b7ff;font-size:.78rem;font-weight:700;letter-spacing:.18em}.logo-mark{display:grid;place-items:center;width:6rem;height:6rem;margin:1rem auto;border:1px solid #c86cff99;border-radius:50%;background:radial-gradient(circle,#6333a8,#17102c 68%);font-size:3.5rem;box-shadow:0 0 2.5rem #a653ff55}.hero-title{margin:0;font:400 clamp(3rem,10vw,6.5rem)/1 Pacifico,cursive;background:linear-gradient(120deg,#fff,#e3a9ff 45%,#ad72ff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero-copy{max-width:38rem;margin:1rem auto;color:var(--muted);font-size:1.05rem}.hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;margin-top:1.3rem}
+    nav{position:sticky;top:.75rem;z-index:5;display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap;margin:0 auto 2rem;padding:.45rem;border:1px solid #9f63d766;border-radius:1rem;background:#160d29dd;backdrop-filter:blur(12px)}nav a{padding:.5rem .85rem;border-radius:.6rem;color:var(--muted);text-decoration:none;font-weight:700}nav a:hover,nav a[aria-current=page]{background:#8b42c955;color:white}
+    main{padding-bottom:2rem}.section-heading{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin:2.5rem 0 1rem}.section-heading h2{margin:0;font-size:1.8rem}.section-heading p{margin:0;color:var(--muted);font-size:.9rem}.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:1rem}.card{padding:1.25rem;background:linear-gradient(145deg,#21163dee,#110c20ee);border:1px solid #a95eea66;border-radius:var(--radius);box-shadow:0 .7rem 2rem #0002}.card h3{margin:0;color:#f4dfff;font-size:1.15rem}.card p{margin:.3rem 0 1rem;color:var(--muted);font-size:.9rem}.price{display:inline-block;padding:.25rem .7rem;border:1px solid #ca7dff99;border-radius:.55rem;background:#7a3bb755;font-size:1.2rem;font-weight:700}.list{display:grid;gap:.1rem}.list-item{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 0;border-bottom:1px solid #ffffff18}.list-item:last-child{border-bottom:0}.list-item small{display:block;color:var(--muted)}
+    .info-panel{margin-top:1rem;padding:1.5rem;border:1px solid #a95eea66;border-radius:var(--radius);background:#17102cdd}.info-panel h2{margin-top:0}.info-panel p{color:var(--muted)}.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem}.fine-print{margin:2rem 0;color:#bbaec8;font-size:.82rem;text-align:center}footer{padding:2rem 0 3rem;border-top:1px solid #ffffff16;color:var(--muted);text-align:center;font-size:.85rem}
+    @media (max-width:520px){.container{width:min(100% - 1.25rem,68rem)}header{padding-top:1.75rem}.section-heading{display:block}.section-heading p{margin-top:.25rem}.list-item{align-items:flex-start}.button{width:100%}.hero-actions{display:grid;grid-template-columns:1fr}}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="age-gate" id="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title">
+    <div class="age-card"><div aria-hidden="true" class="logo-mark">🐼</div><h2 id="age-title">Welcome to Pandaman</h2><p>You must be 21 or older to view this menu. Please confirm your age to continue.</p><div class="hero-actions"><button class="button" id="age-yes" type="button">I am 21 or older</button><button class="button secondary" id="age-no" type="button">Exit</button></div><p id="age-message" role="status"></p></div>
+  </div>
+  <div class="container">
+    <div class="promo" role="note">🎁 <span>Reward:</span> get a free pre-roll after 10 purchases.</div>
+    <header>
+      <p class="eyebrow">PREMIUM CANNABIS PRODUCTS</p><div class="logo-mark" aria-hidden="true">🐼</div><h1 class="hero-title">Pandaman Wellness</h1>
+      <p class="hero-copy">A thoughtfully curated menu of flower, pre-rolls, carts, concentrates, edibles, tinctures, and more.</p>
+      <div class="hero-actions"><a class="button" href="tel:+14017539860">Call to order</a><a class="button secondary" href="sms:+14017539860">Text to order</a></div>
+    </header>
+    <nav aria-label="Primary navigation"><a href="#menu" aria-current="page">Menu</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+    <main id="main-content">
+      <section id="menu" aria-labelledby="menu-title"><div class="section-heading"><h2 id="menu-title">The menu</h2><p>Prices shown in USD</p></div>
+        <div class="menu-grid">
+          <article class="card"><h3>Flower</h3><p>Fresh options by weight</p><div class="list"><div class="list-item"><span>Eighth <small>3.5 g</small></span><strong class="price">$20</strong></div><div class="list-item"><span>Quarter <small>7 g</small></span><strong class="price">$80</strong></div><div class="list-item"><span>Half ounce <small>14 g</small></span><strong class="price">$120</strong></div><div class="list-item"><span>Ounce <small>28 g</small></span><strong class="price">$180</strong></div></div></article>
+          <article class="card"><h3>Pre-rolls</h3><p>Ready to enjoy</p><div class="list"><div class="list-item"><span>1 pre-roll</span><strong class="price">$15</strong></div><div class="list-item"><span>2 pre-rolls</span><strong class="price">$30</strong></div><div class="list-item"><span>3 pre-rolls</span><strong class="price">$60</strong></div></div></article>
+          <article class="card"><h3>Carts</h3><p>Convenient options</p><div class="list"><div class="list-item"><span>1 g cart</span><strong class="price">$20</strong></div><div class="list-item"><span>2 g cart</span><strong class="price">$45</strong></div></div></article>
+          <article class="card"><h3>Concentrate</h3><p>Batter, shatter, or caviar</p><div class="list"><div class="list-item"><span>1 g</span><strong class="price">$30</strong></div><div class="list-item"><span>2 g</span><strong class="price">$60</strong></div><div class="list-item"><span>3 g</span><strong class="price">$80</strong></div></div></article>
+          <article class="card"><h3>Disposables</h3><p>Disposable vape · 1 gram</p><strong class="price">$80</strong></article>
+          <article class="card"><h3>Tincture</h3><p>1,000 mg</p><strong class="price">$40</strong></article>
+          <article class="card"><h3>Edibles</h3><div class="list"><div class="list-item"><span>Gummies <small>300 mg pack · 10 gummies</small></span><strong class="price">$26</strong></div><div class="list-item"><span>Milk chocolate bar <small>1,000 mg whole bar</small></span><strong class="price">$62</strong></div><div class="list-item"><span>Drinks <small>100 mg each</small></span><strong class="price">$22</strong></div></div></article>
+          <article class="card"><h3>Accessories</h3><p>Bic lighter</p><strong class="price">$5</strong></article>
+        </div>
+      </section>
+      <section class="info-panel" id="about" aria-labelledby="about-title"><h2 id="about-title">About Pandaman Wellness</h2><p>We bring you a selection of premium cannabis products in one easy-to-browse menu. Choose your favorites, then call or text to confirm availability and place your order.</p></section>
+      <section class="info-panel" id="contact" aria-labelledby="contact-title"><h2 id="contact-title">Ready to order?</h2><div class="contact-grid"><p>Call or text us at <strong>(401) 753-9860</strong>. Tell us what you want from the menu and we’ll confirm your order.</p><div class="hero-actions"><a class="button" href="tel:+14017539860">📞 Call (401) 753-9860</a><a class="button secondary" href="sms:+14017539860">💬 Send a text</a></div></div></section>
+      <p class="fine-print">For adults 21+ only. Please consume responsibly. Product availability and pricing may change; confirm details when ordering.</p>
+    </main>
+    <footer>© <span id="year"></span> Pandaman Wellness · Premium cannabis products</footer>
+  </div>
+  <script>
+    (function(){
+      var gate=document.getElementById('age-gate'), message=document.getElementById('age-message');
+      try{if(sessionStorage.getItem('pandaman-age-confirmed')==='true')gate.classList.add('hidden')}catch(e){}
+      document.getElementById('age-yes').addEventListener('click',function(){try{sessionStorage.setItem('pandaman-age-confirmed','true')}catch(e){}gate.classList.add('hidden');document.querySelector('nav a').focus()});
+      document.getElementById('age-no').addEventListener('click',function(){message.textContent='Sorry, you must be 21 or older to enter.';document.getElementById('age-yes').disabled=true;this.disabled=true});
+      document.getElementById('year').textContent=new Date().getFullYear();
+    }());
+  </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Staff-only order management for Pandaman Wellness.">
+  <meta name="theme-color" content="#120b2e">
+  <title>Staff Orders | Pandaman Wellness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:dark;--bg:#0b0718;--surface:#17102c;--surface-2:#21163b;--text:#fff8ff;--muted:#cfc1dc;--accent:#c86cff;--focus:#ffe58a;--border:#ffffff25;box-sizing:border-box}
+    *,*:before,*:after{box-sizing:inherit}body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(circle at 15% 0,#32156a 0,transparent 34rem),var(--bg);color:var(--text);font:1rem/1.5 'DM Sans',sans-serif}button,input,textarea,select{font:inherit}a{color:#e0a6ff}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:3px}.container{width:min(100% - 2rem,70rem);margin:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.5rem 0;border-bottom:1px solid var(--border)}.brand{font:1.6rem Pacifico,cursive;color:var(--text);text-decoration:none}.topbar nav{display:flex;align-items:center;gap:1rem}.topbar nav a{color:var(--muted)}h1,h2,h3{line-height:1.2}h1{margin:2rem 0 .4rem;font-size:clamp(2rem,5vw,3rem)}.muted{color:var(--muted)}.panel{margin:1.5rem 0;padding:clamp(1rem,3vw,1.5rem);border:1px solid var(--border);border-radius:1rem;background:#17102cee;box-shadow:0 1rem 3rem #0003}.hidden{display:none!important}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.field{display:grid;gap:.4rem}.field.full{grid-column:1/-1}label{font-weight:600}input,textarea,select{width:100%;padding:.75rem .85rem;border:1px solid #ffffff3b;border-radius:.65rem;background:#0d091a;color:var(--text)}textarea{min-height:7rem;resize:vertical}.actions{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-top:1rem}button{padding:.7rem 1rem;border:0;border-radius:.65rem;background:var(--accent);color:#160b22;font-weight:700;cursor:pointer}button.secondary{border:1px solid var(--border);background:var(--surface-2);color:var(--text)}button.danger{border:1px solid #ff8b9b66;background:#582033;color:#fff}button:disabled{opacity:.6;cursor:wait}.notice{min-height:1.5rem;margin:.75rem 0;color:var(--muted)}.notice.error{color:#ffabb6}.notice.success{color:#b4f4ce}.orders-header{display:flex;align-items:center;justify-content:space-between;gap:1rem}.order-list{display:grid;gap:.8rem;margin-top:1rem}.order-card{padding:1rem;border:1px solid var(--border);border-radius:.8rem;background:#100b20}.order-card h3{margin:0}.order-meta{display:flex;align-items:center;justify-content:space-between;gap:1rem}.order-details{white-space:pre-wrap;overflow-wrap:anywhere}.badge{display:inline-block;padding:.2rem .55rem;border-radius:99px;background:#57327b;color:#f1d8ff;font-size:.85rem}.small{font-size:.9rem}.footer{padding:1.5rem 0 2rem;color:var(--muted);font-size:.9rem}@media(max-width:600px){.topbar{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.orders-header,.order-meta{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <a class="brand" href="index.html">🐼 Pandaman Wellness</a>
+      <nav aria-label="Primary navigation"><a href="index.html">Public menu</a><a href="weather.html">Weather</a><button id="sign-out" class="secondary hidden" type="button">Sign out</button></nav>
+    </header>
+    <main>
+      <h1>Staff orders</h1>
+      <p class="muted">Internal order records. Sign in with an authorized staff account to continue.</p>
+      <p id="status" class="notice" role="status" aria-live="polite"></p>
+      <section id="login-panel" class="panel" aria-labelledby="login-title">
+        <h2 id="login-title">Staff sign in</h2>
+        <form id="login-form" class="form-grid">
+          <div class="field full"><label for="email">Staff email</label><input id="email" name="email" type="email" autocomplete="username" required></div>
+          <div class="field full"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+          <div class="field full"><div class="actions"><button type="submit">Sign in</button></div></div>
+        </form>
+      </section>
+      <section id="workspace" class="hidden" aria-label="Order management">
+        <form id="order-form" class="panel">
+          <h2>Record an order</h2>
+          <div class="form-grid">
+            <div class="field"><label for="customer-name">Customer name</label><input id="customer-name" name="customer_name" maxlength="120" autocomplete="name" required></div>
+            <div class="field"><label for="customer-contact">Customer contact (optional)</label><input id="customer-contact" name="customer_contact" maxlength="200" autocomplete="off"></div>
+            <div class="field full"><label for="details">Order details</label><textarea id="details" name="details" maxlength="5000" required></textarea></div>
+            <div class="field"><label for="order-status">Status</label><select id="order-status" name="status"><option value="new">New</option><option value="in_progress">In progress</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></div>
+          </div>
+          <div class="actions"><button id="save-order" type="submit">Save order</button><button id="cancel-edit" class="secondary hidden" type="button">Cancel edit</button></div>
+          <p class="small muted">Store only information needed to manage the order. Avoid payment card data or sensitive personal information.</p>
+        </form>
+        <section class="panel" aria-labelledby="orders-title">
+          <div class="orders-header"><div><h2 id="orders-title">Orders</h2><p class="muted">Visible only to the authorized staff account.</p></div><button id="refresh-orders" class="secondary" type="button">Refresh</button></div>
+          <div id="orders" class="order-list" aria-live="polite"></div>
+        </section>
+      </section>
+    </main>
+    <footer class="footer">Pandaman Wellness · Staff tools</footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Publishable/anon keys are intended for browser use. Protect data with the RLS policies in supabase/schema.sql.
+    const SUPABASE_URL = 'https://rilcamphpjcaebajquyo.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_XkhO-mTjYgsB5ClCixI1qw_QYL534pV';
+    const STAFF_EMAIL = 'jjb@petlover.com';
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    const statusEl = document.getElementById('status');
+    const loginPanel = document.getElementById('login-panel');
+    const workspace = document.getElementById('workspace');
+    const signOutButton = document.getElementById('sign-out');
+    const orderForm = document.getElementById('order-form');
+    const ordersEl = document.getElementById('orders');
+    const saveButton = document.getElementById('save-order');
+    const cancelEditButton = document.getElementById('cancel-edit');
+    let editingId = null;
+
+    function setMessage(message, type = '') {
+      statusEl.textContent = message;
+      statusEl.className = `notice${type ? ` ${type}` : ''}`;
+    }
+    function setSignedIn(isSignedIn) {
+      loginPanel.classList.toggle('hidden', isSignedIn);
+      workspace.classList.toggle('hidden', !isSignedIn);
+      signOutButton.classList.toggle('hidden', !isSignedIn);
+    }
+    function resetOrderForm() {
+      editingId = null;
+      orderForm.reset();
+      document.getElementById('order-status').value = 'new';
+      saveButton.textContent = 'Save order';
+      cancelEditButton.classList.add('hidden');
+    }
+    function readableStatus(value) {
+      return {new:'New',in_progress:'In progress',completed:'Completed',cancelled:'Cancelled'}[value] || value;
+    }
+    function makeOrderCard(order) {
+      const card = document.createElement('article');
+      card.className = 'order-card';
+      const header = document.createElement('div');
+      header.className = 'order-meta';
+      const name = document.createElement('h3');
+      name.textContent = order.customer_name;
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = readableStatus(order.status);
+      header.append(name, badge);
+      const contact = document.createElement('p');
+      contact.className = 'small muted';
+      contact.textContent = order.customer_contact || 'No contact provided';
+      const details = document.createElement('p');
+      details.className = 'order-details';
+      details.textContent = order.details;
+      const date = document.createElement('p');
+      date.className = 'small muted';
+      date.textContent = `Created ${new Date(order.created_at).toLocaleString()}`;
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+      const edit = document.createElement('button');
+      edit.className = 'secondary';
+      edit.type = 'button';
+      edit.textContent = 'Edit';
+      edit.addEventListener('click', () => {
+        editingId = order.id;
+        orderForm.elements.customer_name.value = order.customer_name;
+        orderForm.elements.customer_contact.value = order.customer_contact || '';
+        orderForm.elements.details.value = order.details;
+        orderForm.elements.status.value = order.status;
+        saveButton.textContent = 'Update order';
+        cancelEditButton.classList.remove('hidden');
+        orderForm.scrollIntoView({behavior:'smooth',block:'start'});
+        document.getElementById('customer-name').focus();
+      });
+      actions.append(edit);
+      card.append(header, contact, details, date, actions);
+      return card;
+    }
+    async function loadOrders() {
+      ordersEl.replaceChildren();
+      const loading = document.createElement('p');
+      loading.className = 'muted';
+      loading.textContent = 'Loading orders…';
+      ordersEl.append(loading);
+      const {data, error} = await db.from('orders').select('id,customer_name,customer_contact,details,status,created_at').order('created_at',{ascending:false});
+      if (error) {
+        ordersEl.replaceChildren();
+        setMessage(`Could not load orders: ${error.message}`, 'error');
+        return;
+      }
+      ordersEl.replaceChildren();
+      if (!data.length) {
+        const empty = document.createElement('p');
+        empty.className = 'muted';
+        empty.textContent = 'No orders yet.';
+        ordersEl.append(empty);
+        return;
+      }
+      data.forEach(order => ordersEl.append(makeOrderCard(order)));
+    }
+    async function checkSession() {
+      const {data, error} = await db.auth.getSession();
+      if (error) setMessage(`Could not check sign-in: ${error.message}`, 'error');
+      const user = data.session?.user;
+      const authorized = !!user && user.email?.toLowerCase() === STAFF_EMAIL;
+      if (user && !authorized) {
+        await db.auth.signOut();
+        setSignedIn(false);
+        setMessage('This account is not authorized for staff orders.', 'error');
+        return;
+      }
+      setSignedIn(authorized);
+      if (authorized) {
+        setMessage(`Signed in as ${user.email}.`);
+        await loadOrders();
+      }
+    }
+    document.getElementById('login-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const email = form.elements.email.value.trim().toLowerCase();
+      if (email !== STAFF_EMAIL) {
+        setMessage('This account is not authorized for staff orders.', 'error');
+        return;
+      }
+      setMessage('Signing in…');
+      const {error} = await db.auth.signInWithPassword({email,password:form.elements.password.value});
+      if (error) setMessage(`Sign-in failed: ${error.message}`, 'error');
+      else await checkSession();
+    });
+    orderForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      saveButton.disabled = true;
+      setMessage(editingId ? 'Updating order…' : 'Saving order…');
+      const userResult = await db.auth.getUser();
+      if (userResult.error || userResult.data.user?.email?.toLowerCase() !== STAFF_EMAIL) {
+        saveButton.disabled = false;
+        setMessage('Your staff session is not authorized. Please sign in again.', 'error');
+        await db.auth.signOut();
+        setSignedIn(false);
+        return;
+      }
+      const payload = {
+        customer_name:orderForm.elements.customer_name.value.trim(),
+        customer_contact:orderForm.elements.customer_contact.value.trim() || null,
+        details:orderForm.elements.details.value.trim(),
+        status:orderForm.elements.status.value
+      };
+      const request = editingId
+        ? db.from('orders').update(payload).eq('id',editingId)
+        : db.from('orders').insert({...payload,created_by:userResult.data.user.id});
+      const {error} = await request;
+      saveButton.disabled = false;
+      if (error) {
+        setMessage(`Could not save order: ${error.message}`, 'error');
+        return;
+      }
+      resetOrderForm();
+      setMessage('Order saved.', 'success');
+      await loadOrders();
+    });
+    cancelEditButton.addEventListener('click', resetOrderForm);
+    document.getElementById('refresh-orders').addEventListener('click', loadOrders);
+    signOutButton.addEventListener('click', async () => {
+      const {error} = await db.auth.signOut();
+      setSignedIn(false);
+      setMessage(error ? `Could not sign out: ${error.message}` : 'Signed out.');
+      ordersEl.replaceChildren();
+    });
+    db.auth.onAuthStateChange((_event, session) => {
+      const user = session?.user;
+      if (user && user.email?.toLowerCase() === STAFF_EMAIL) {
+        setSignedIn(true);
+        // Avoid awaiting Supabase calls in this callback.
+        window.setTimeout(loadOrders, 0);
+      } else if (user) {
+        setSignedIn(false);
+        window.setTimeout(() => db.auth.signOut(), 0);
+        setMessage('This account is not authorized for staff orders.', 'error');
+      } else {
+        setSignedIn(false);
+        ordersEl.replaceChildren();
+      }
+    });
+    checkSession();
+  </script>
+</body>
+</html>

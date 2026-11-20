@@ -11,21 +11,22 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
   <style>
     :root{color-scheme:dark;--bg:#0b0718;--text:#fff8ff;--muted:#cfc1dc;--accent:#c86cff;--focus:#ffe58a;--border:#ffffff25;box-sizing:border-box}
-    *,*:before,*:after{box-sizing:inherit}body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(circle at 15% 0,#32156a 0,transparent 34rem),var(--bg);color:var(--text);font:1rem/1.5 'DM Sans',sans-serif}.container{width:min(100% - 2rem,48rem);margin:auto}a{color:#e0a6ff}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:3px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.5rem 0;border-bottom:1px solid var(--border)}.brand{font:1.6rem Pacifico,cursive;color:var(--text);text-decoration:none}.panel{margin:2rem 0;padding:clamp(1rem,4vw,2rem);border:1px solid var(--border);border-radius:1rem;background:#17102cee;box-shadow:0 1rem 3rem #0003}h1{margin-top:0;font-size:clamp(2rem,5vw,3rem);line-height:1.15}.muted{color:var(--muted)}.field{display:grid;gap:.45rem;margin:1rem 0}label{font-weight:600}input,textarea{width:100%;padding:.8rem;border:1px solid #ffffff3b;border-radius:.65rem;background:#0d091a;color:var(--text);font:inherit}textarea{min-height:9rem;resize:vertical}button{padding:.8rem 1.15rem;border:0;border-radius:.65rem;background:var(--accent);color:#160b22;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.6;cursor:wait}.notice{min-height:1.5rem}.notice.error{color:#ffabb6}.notice.success{color:#b4f4ce}.small{font-size:.9rem}.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}.footer{padding:1rem 0 2rem;color:var(--muted);font-size:.9rem}@media(max-width:520px){.topbar{align-items:flex-start;flex-direction:column}}
+    *,*:before,*:after{box-sizing:inherit}body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(circle at 15% 0,#32156a 0,transparent 34rem),var(--bg);color:var(--text);font:1rem/1.5 'DM Sans',sans-serif}.container{width:min(100% - 2rem,48rem);margin:auto}a{color:#e0a6ff}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:3px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.5rem 0;border-bottom:1px solid var(--border)}.brand{font:1.6rem Pacifico,cursive;color:var(--text);text-decoration:none}.panel{margin:2rem 0;padding:clamp(1rem,4vw,2rem);border:1px solid var(--border);border-radius:1rem;background:#17102cee;box-shadow:0 1rem 3rem #0003}h1{margin-top:0;font-size:clamp(2rem,5vw,3rem);line-height:1.15}.muted{color:var(--muted)}.field{display:grid;gap:.45rem;margin:1.2rem 0}label{font-weight:600}input,textarea{width:100%;padding:.8rem;border:1px solid #ffffff3b;border-radius:.65rem;background:#0d091a;color:var(--text);font:inherit}input::placeholder,textarea::placeholder{color:#a99bb8}textarea{min-height:9rem;resize:vertical}.help{font-size:.9rem;color:var(--muted)}button{padding:.8rem 1.15rem;border:0;border-radius:.65rem;background:var(--accent);color:#160b22;font:inherit;font-weight:700;cursor:pointer}button:hover:not(:disabled){filter:brightness(1.12)}button:disabled{opacity:.6;cursor:wait}.notice{min-height:1.5rem}.notice.error{color:#ffabb6}.notice.success{color:#b4f4ce}.small{font-size:.9rem}.item-summary{margin:1rem 0;padding:.85rem 1rem;border:1px solid #c86cff66;border-radius:.7rem;background:#8b42c922}.item-summary strong{display:block;color:#ffe49b}.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}.footer{padding:1rem 0 2rem;color:var(--muted);font-size:.9rem}@media(max-width:520px){.topbar{align-items:flex-start;flex-direction:column}}
   </style>
 </head>
 <body>
   <div class="container">
-    <header class="topbar"><a class="brand" href="index.html">🐼 Pandaman Wellness</a><a href="index.html">Back to menu</a></header>
+    <header class="topbar"><a class="brand" href="index.html">🐼 Pandaman Wellness</a><a href="index.html">← Back to menu</a></header>
     <main>
       <section class="panel" aria-labelledby="page-title">
         <h1 id="page-title">Send an order request</h1>
-        <p class="muted">Provide your contact details and the item you want. A staff member will follow up to confirm availability and details. Submitting this form is a request, not a confirmed order.</p>
+        <p class="muted">Share your contact details and request. A staff member will follow up to confirm availability and details. This is a request, not a confirmed order.</p>
+        <div id="selected-item" class="item-summary hidden" aria-live="polite"><span>Selected item</span><strong id="item-name"></strong></div>
         <p id="status" class="notice" role="status" aria-live="polite"></p>
-        <form id="order-request" novalidate>
-          <div class="field"><label for="customer-name">Your name</label><input id="customer-name" name="customer_name" autocomplete="name" maxlength="120" required></div>
-          <div class="field"><label for="customer-contact">Phone number</label><input id="customer-contact" name="customer_contact" type="tel" autocomplete="tel" maxlength="200" required aria-describedby="contact-help"><span id="contact-help" class="small muted">Include a country code if needed.</span></div>
-          <div class="field"><label for="details">Item(s) you want</label><textarea id="details" name="details" maxlength="5000" required placeholder="Your selected item will appear here. Add quantities or other items if needed."></textarea></div>
+        <form id="order-request">
+          <div class="field"><label for="customer-name">Your name</label><input id="customer-name" name="customer_name" autocomplete="name" maxlength="120" required placeholder="Name for the request"></div>
+          <div class="field"><label for="customer-contact">Phone number</label><input id="customer-contact" name="customer_contact" type="tel" autocomplete="tel" inputmode="tel" minlength="7" maxlength="30" pattern="[0-9+().\-\s]{7,30}" required aria-describedby="contact-help" placeholder="(401) 555-0123"><span id="contact-help" class="help">Include a country code if needed.</span></div>
+          <div class="field"><label for="details">What would you like to request?</label><textarea id="details" name="details" maxlength="5000" required placeholder="Your selected item appears here. Add a quantity or any other request."></textarea></div>
           <div class="hp" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
           <p class="small muted">Please don’t include payment card details or sensitive personal information. We’ll use your contact details only to respond to this request.</p>
           <button id="submit-order" type="submit">Send request</button>
@@ -38,7 +39,7 @@
   <script>
     const SUPABASE_URL = 'https://rilcamphpjcaebajquyo.supabase.co';
     const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_XkhO-mTjYgsB5ClCixI1qw_QYL534pV';
-    // Use an anonymous-only client so a staff session in this browser cannot cause public requests to use authenticated RLS policies.
+    // Keep public submissions anonymous even if this browser has a staff dashboard session.
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false,storageKey:'pandaman-public-orders'}
     });
@@ -46,8 +47,12 @@
     const status = document.getElementById('status');
     const submitButton = document.getElementById('submit-order');
     const itemField = form.elements.details;
-    const selectedItem = new URLSearchParams(window.location.search).get('item');
-    if (selectedItem) itemField.value = selectedItem.slice(0, 5000);
+    const selectedItem = new URLSearchParams(window.location.search).get('item')?.trim().slice(0, 5000);
+    if (selectedItem) {
+      itemField.value = selectedItem;
+      document.getElementById('item-name').textContent = selectedItem;
+      document.getElementById('selected-item').classList.remove('hidden');
+    }
     form.addEventListener('submit', async event => {
       event.preventDefault();
       if (!form.reportValidity()) return;
@@ -57,23 +62,26 @@
       const details = itemField.value.trim();
       if (!customerName || !customerContact || !details) {
         status.className = 'notice error';
-        status.textContent = 'Please complete each field.';
+        status.textContent = 'Please complete each field before sending.';
         return;
       }
       submitButton.disabled = true;
       status.className = 'notice';
       status.textContent = 'Sending your request…';
-      const {error} = await db.from('orders').insert({customer_name:customerName,customer_contact:customerContact,details,status:'new',created_by:null});
-      submitButton.disabled = false;
-      if (error) {
+      try {
+        const {error} = await db.from('orders').insert({customer_name:customerName,customer_contact:customerContact,details,status:'new',created_by:null});
+        if (error) throw error;
+        form.reset();
+        document.getElementById('selected-item').classList.add('hidden');
+        status.className = 'notice success';
+        status.textContent = 'Request sent! Staff will follow up using the phone number you provided.';
+      } catch (error) {
         status.className = 'notice error';
-        status.textContent = 'We couldn’t send your request just now. Please try again later.';
+        status.textContent = 'We couldn’t send your request. Please check your connection and try again.';
         console.error('Order request submission failed:', error.message);
-        return;
+      } finally {
+        submitButton.disabled = false;
       }
-      form.reset();
-      status.className = 'notice success';
-      status.textContent = 'Your request was sent. Staff will follow up using the contact information you provided.';
     });
   </script>
 </body>

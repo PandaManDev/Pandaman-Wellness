@@ -22,8 +22,59 @@
     @media(max-width:650px){.site-nav-wrap{align-items:flex-start;flex-direction:column;padding:.7rem 0;gap:.45rem}.site-nav{gap:.1rem}.site-nav a{padding:.45rem .55rem;font-size:.75rem}.container{width:min(100% - 1.25rem,72rem);padding-top:1.25rem}.topline{align-items:flex-start;flex-direction:column;gap:.75rem}.search{display:grid;grid-template-columns:1fr 1fr}.search input{grid-column:1/-1}.current{grid-template-columns:1fr;gap:1rem}.current-right{grid-template-columns:repeat(2,minmax(0,1fr))}.day-card{grid-template-columns:minmax(5.5rem,1fr) 2rem minmax(0,1fr);gap:.5rem;padding:.85rem}.day-condition{display:none}.day-temps{gap:.5rem}.section-title{align-items:flex-start;flex-direction:column;gap:.2rem}.back-button{width:100%}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
   </style>
+
+  /* Pandaman Wellness branded page loader */
+  .page-loader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:1.5rem;background:radial-gradient(ellipse at 50% 42%,#62304955,transparent 32rem),#100b17;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s ease,visibility .45s ease}
+  .page-loader.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+  .page-loader.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+  .loader-content{display:grid;justify-items:center;gap:1rem;text-align:center}
+  .loader-logo-wrap{position:relative;display:grid;width:112px;aspect-ratio:1;place-items:center}
+  .loader-logo{position:relative;z-index:1;width:76px;height:76px;object-fit:contain;filter:drop-shadow(0 5px 22px #e88bb477);animation:loader-float 1.8s ease-in-out infinite}
+  .loader-ring{position:absolute;inset:0;border:2px solid #e88bb422;border-top-color:#e88bb4;border-right-color:#efd29a;border-radius:50%;animation:loader-spin 1.15s linear infinite}
+  .loader-ring:after{position:absolute;inset:8px;border:1px solid #efd29a22;border-bottom-color:#efd29a88;border-radius:50%;content:''}
+  .loader-title{color:#faf6fb;font:800 .9rem/1.2 Manrope,'DM Sans',sans-serif;letter-spacing:.19em}
+  .loader-caption{color:#b9aebe;font:500 .76rem/1.4 'DM Sans',sans-serif;letter-spacing:.04em}
+  .loader-progress{overflow:hidden;width:150px;height:3px;margin-top:.25rem;border-radius:99px;background:#ffffff16}
+  .loader-progress:after{display:block;width:42%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#e88bb4,#efd29a);content:'';animation:loader-progress 1.35s ease-in-out infinite}
+  @keyframes loader-spin{to{transform:rotate(360deg)}}
+  @keyframes loader-float{50%{transform:translateY(-5px)}}
+  @keyframes loader-progress{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
+  @media(prefers-reduced-motion:reduce){.page-loader,.loader-logo,.loader-ring,.loader-progress:after{animation:none!important;transition:none!important}.loader-progress:after{width:100%;transform:none}}
+
 </head>
 <body>
+
+  <div class="page-loader" id="page-loader" role="status" aria-live="polite" aria-label="Loading Pandaman Wellness">
+    <div class="loader-content">
+      <div class="loader-logo-wrap"><span class="loader-ring" aria-hidden="true"></span><img class="loader-logo" src="assets/pandaman-logo.png" alt=""></div>
+      <div class="loader-title">PANDAMAN WELLNESS</div>
+      <div class="loader-caption">Getting everything ready for you</div>
+      <div class="loader-progress" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const loader = document.getElementById('page-loader');
+      if (!loader) return;
+      const startedAt = Date.now();
+      let finished = false;
+      loader.classList.add('is-visible');
+      const hideLoader = () => {
+        if (finished) return;
+        finished = true;
+        const remaining = Math.max(0, 650 - (Date.now() - startedAt));
+        window.setTimeout(() => {
+          loader.classList.add('is-leaving');
+          window.setTimeout(() => loader.remove(), 500);
+        }, remaining);
+      };
+      if (document.readyState === 'complete') hideLoader();
+      else window.addEventListener('load', hideLoader, { once: true });
+      window.setTimeout(hideLoader, 6500);
+    })();
+  </script>
+
   <header class="site-header"><nav class="site-nav-wrap" aria-label="Site navigation"><a class="site-brand" href="index.html">Pandaman Wellness</a><nav class="site-nav" aria-label="Primary navigation"><a href="index.html">Home</a><a href="index.html#menu">Menu</a><a href="weather.html" aria-current="page">Weather</a><a href="clock.html">World Clock</a><a href="order.html">Request</a><a href="orders.html">Staff</a></nav></nav></header>
   <a class="skip" href="#weather-main">Skip to weather</a>
   <main class="container" id="weather-main">

@@ -13,8 +13,59 @@
     :root{color-scheme:dark;--bg:#0b0718;--text:#fff8ff;--muted:#cfc1dc;--accent:#c86cff;--focus:#ffe58a;--border:#ffffff25;box-sizing:border-box}
     *,*:before,*:after{box-sizing:inherit}body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(circle at 15% 0,#32156a 0,transparent 34rem),var(--bg);color:var(--text);font:1rem/1.5 'DM Sans',sans-serif}.container{width:min(100% - 2rem,48rem);margin:auto}a{color:#e0a6ff}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:3px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1rem 0;border-bottom:1px solid var(--border)}.site-nav{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap}.site-nav a{padding:.55rem .7rem;border:1px solid transparent;border-radius:999px;color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:700;white-space:nowrap}.site-nav a:hover,.site-nav a:focus-visible{border-color:#c86cff66;background:#ffffff08;color:var(--text)}.brand{font:1.6rem Pacifico,cursive;color:var(--text);text-decoration:none}.panel{margin:2rem 0;padding:clamp(1rem,4vw,2rem);border:1px solid var(--border);border-radius:1rem;background:#17102cee;box-shadow:0 1rem 3rem #0003}h1{margin-top:0;font-size:clamp(2rem,5vw,3rem);line-height:1.15}.muted{color:var(--muted)}.field{display:grid;gap:.45rem;margin:1.2rem 0}label{font-weight:600}input,textarea{width:100%;padding:.8rem;border:1px solid #ffffff3b;border-radius:.65rem;background:#0d091a;color:var(--text);font:inherit}input::placeholder,textarea::placeholder{color:#a99bb8}textarea{min-height:9rem;resize:vertical}.help{font-size:.9rem;color:var(--muted)}button{padding:.8rem 1.15rem;border:0;border-radius:.65rem;background:var(--accent);color:#160b22;font:inherit;font-weight:700;cursor:pointer}button:hover:not(:disabled){filter:brightness(1.12)}button:disabled{opacity:.6;cursor:wait}.notice{min-height:1.5rem}.notice.error{color:#ffabb6}.notice.success{color:#b4f4ce}.small{font-size:.9rem}.item-summary{margin:1rem 0;padding:.85rem 1rem;border:1px solid #c86cff66;border-radius:.7rem;background:#8b42c922}.item-summary strong{display:block;color:#ffe49b}.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}.footer{padding:1rem 0 2rem;color:var(--muted);font-size:.9rem}@media(max-width:520px){.topbar{align-items:flex-start;flex-direction:column}.site-nav{width:100%;gap:.15rem}.site-nav a{padding:.5rem .58rem;font-size:.76rem}}
   </style>
+
+  /* Pandaman Wellness branded page loader */
+  .page-loader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:1.5rem;background:radial-gradient(ellipse at 50% 42%,#62304955,transparent 32rem),#100b17;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s ease,visibility .45s ease}
+  .page-loader.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+  .page-loader.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+  .loader-content{display:grid;justify-items:center;gap:1rem;text-align:center}
+  .loader-logo-wrap{position:relative;display:grid;width:112px;aspect-ratio:1;place-items:center}
+  .loader-logo{position:relative;z-index:1;width:76px;height:76px;object-fit:contain;filter:drop-shadow(0 5px 22px #e88bb477);animation:loader-float 1.8s ease-in-out infinite}
+  .loader-ring{position:absolute;inset:0;border:2px solid #e88bb422;border-top-color:#e88bb4;border-right-color:#efd29a;border-radius:50%;animation:loader-spin 1.15s linear infinite}
+  .loader-ring:after{position:absolute;inset:8px;border:1px solid #efd29a22;border-bottom-color:#efd29a88;border-radius:50%;content:''}
+  .loader-title{color:#faf6fb;font:800 .9rem/1.2 Manrope,'DM Sans',sans-serif;letter-spacing:.19em}
+  .loader-caption{color:#b9aebe;font:500 .76rem/1.4 'DM Sans',sans-serif;letter-spacing:.04em}
+  .loader-progress{overflow:hidden;width:150px;height:3px;margin-top:.25rem;border-radius:99px;background:#ffffff16}
+  .loader-progress:after{display:block;width:42%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#e88bb4,#efd29a);content:'';animation:loader-progress 1.35s ease-in-out infinite}
+  @keyframes loader-spin{to{transform:rotate(360deg)}}
+  @keyframes loader-float{50%{transform:translateY(-5px)}}
+  @keyframes loader-progress{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
+  @media(prefers-reduced-motion:reduce){.page-loader,.loader-logo,.loader-ring,.loader-progress:after{animation:none!important;transition:none!important}.loader-progress:after{width:100%;transform:none}}
+
 </head>
 <body>
+
+  <div class="page-loader" id="page-loader" role="status" aria-live="polite" aria-label="Loading Pandaman Wellness">
+    <div class="loader-content">
+      <div class="loader-logo-wrap"><span class="loader-ring" aria-hidden="true"></span><img class="loader-logo" src="assets/pandaman-logo.png" alt=""></div>
+      <div class="loader-title">PANDAMAN WELLNESS</div>
+      <div class="loader-caption">Getting everything ready for you</div>
+      <div class="loader-progress" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const loader = document.getElementById('page-loader');
+      if (!loader) return;
+      const startedAt = Date.now();
+      let finished = false;
+      loader.classList.add('is-visible');
+      const hideLoader = () => {
+        if (finished) return;
+        finished = true;
+        const remaining = Math.max(0, 650 - (Date.now() - startedAt));
+        window.setTimeout(() => {
+          loader.classList.add('is-leaving');
+          window.setTimeout(() => loader.remove(), 500);
+        }, remaining);
+      };
+      if (document.readyState === 'complete') hideLoader();
+      else window.addEventListener('load', hideLoader, { once: true });
+      window.setTimeout(hideLoader, 6500);
+    })();
+  </script>
+
   <div class="container">
     <header class="topbar"><a class="brand" href="index.html">🐼 Pandaman Wellness</a><nav class="site-nav" aria-label="Primary navigation"><a href="index.html">Home</a><a href="index.html#menu">Menu</a><a href="weather.html">Weather</a><a href="clock.html">World Clock</a><a href="order.html">Request</a><a href="orders.html">Staff</a></nav></header>
     <main>

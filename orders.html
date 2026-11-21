@@ -13,8 +13,59 @@
     :root{color-scheme:dark;--bg:#0b0718;--surface:#17102c;--surface-2:#21163b;--text:#fff8ff;--muted:#cfc1dc;--accent:#c86cff;--focus:#ffe58a;--border:#ffffff25;box-sizing:border-box}
     *,*:before,*:after{box-sizing:inherit}body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(circle at 15% 0,#32156a 0,transparent 34rem),var(--bg);color:var(--text);font:1rem/1.5 'DM Sans',sans-serif}.container{width:min(100% - 2rem,70rem);margin:auto}a{color:#e0a6ff}button,input,textarea,select{font:inherit}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:3px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.5rem 0;border-bottom:1px solid var(--border)}.brand{font:1.6rem Pacifico,cursive;color:var(--text);text-decoration:none}.topbar nav{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}.topbar nav a{color:var(--muted)}h1,h2,h3{line-height:1.2}h1{margin:2rem 0 .4rem;font-size:clamp(2rem,5vw,3rem)}.muted{color:var(--muted)}.panel{margin:1.5rem 0;padding:clamp(1rem,3vw,1.5rem);border:1px solid var(--border);border-radius:1rem;background:#17102cee;box-shadow:0 1rem 3rem #0003}.hidden{display:none!important}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.field{display:grid;gap:.4rem}.field.full{grid-column:1/-1}label{font-weight:600}input,textarea,select{width:100%;padding:.75rem .85rem;border:1px solid #ffffff3b;border-radius:.65rem;background:#0d091a;color:var(--text)}textarea{min-height:7rem;resize:vertical}.actions{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-top:1rem}button{padding:.7rem 1rem;border:0;border-radius:.65rem;background:var(--accent);color:#160b22;font-weight:700;cursor:pointer}button.secondary{border:1px solid var(--border);background:var(--surface-2);color:var(--text)}button:disabled{opacity:.6;cursor:wait}.notice{min-height:1.5rem;margin:.75rem 0;color:var(--muted)}.notice.error{color:#ffabb6}.notice.success{color:#b4f4ce}.orders-header{display:flex;align-items:center;justify-content:space-between;gap:1rem}.toolbar{display:grid;grid-template-columns:minmax(12rem,1fr) minmax(10rem,14rem);gap:.75rem;margin-top:1rem}.stats{display:flex;gap:.6rem;flex-wrap:wrap;margin:1rem 0}.stat{padding:.45rem .7rem;border:1px solid var(--border);border-radius:.7rem;background:#100b20;color:var(--muted)}.stat strong{color:var(--text)}.order-list{display:grid;gap:.8rem;margin-top:1rem}.order-card{padding:1rem;border:1px solid var(--border);border-radius:.8rem;background:#100b20}.order-meta{display:flex;align-items:center;justify-content:space-between;gap:1rem}.order-card h3{margin:0}.badge{display:inline-block;padding:.2rem .55rem;border-radius:99px;background:#57327b;color:#f1d8ff;font-size:.85rem}.badge[data-status="completed"]{background:#1c5738;color:#c9ffda}.badge[data-status="cancelled"]{background:#582033;color:#ffd9df}.badge[data-status="in_progress"]{background:#624a18;color:#ffedb5}.order-details{white-space:pre-wrap;overflow-wrap:anywhere}.small{font-size:.9rem}.footer{padding:1.5rem 0 2rem;color:var(--muted);font-size:.9rem}.empty{padding:1.5rem;text-align:center;border:1px dashed var(--border);border-radius:.8rem;color:var(--muted)}@media(max-width:600px){.topbar{align-items:flex-start;flex-direction:column}.form-grid,.toolbar{grid-template-columns:1fr}.field.full{grid-column:auto}.orders-header,.order-meta{align-items:flex-start;flex-direction:column}}
   </style>
+
+  /* Pandaman Wellness branded page loader */
+  .page-loader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:1.5rem;background:radial-gradient(ellipse at 50% 42%,#62304955,transparent 32rem),#100b17;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s ease,visibility .45s ease}
+  .page-loader.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+  .page-loader.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+  .loader-content{display:grid;justify-items:center;gap:1rem;text-align:center}
+  .loader-logo-wrap{position:relative;display:grid;width:112px;aspect-ratio:1;place-items:center}
+  .loader-logo{position:relative;z-index:1;width:76px;height:76px;object-fit:contain;filter:drop-shadow(0 5px 22px #e88bb477);animation:loader-float 1.8s ease-in-out infinite}
+  .loader-ring{position:absolute;inset:0;border:2px solid #e88bb422;border-top-color:#e88bb4;border-right-color:#efd29a;border-radius:50%;animation:loader-spin 1.15s linear infinite}
+  .loader-ring:after{position:absolute;inset:8px;border:1px solid #efd29a22;border-bottom-color:#efd29a88;border-radius:50%;content:''}
+  .loader-title{color:#faf6fb;font:800 .9rem/1.2 Manrope,'DM Sans',sans-serif;letter-spacing:.19em}
+  .loader-caption{color:#b9aebe;font:500 .76rem/1.4 'DM Sans',sans-serif;letter-spacing:.04em}
+  .loader-progress{overflow:hidden;width:150px;height:3px;margin-top:.25rem;border-radius:99px;background:#ffffff16}
+  .loader-progress:after{display:block;width:42%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#e88bb4,#efd29a);content:'';animation:loader-progress 1.35s ease-in-out infinite}
+  @keyframes loader-spin{to{transform:rotate(360deg)}}
+  @keyframes loader-float{50%{transform:translateY(-5px)}}
+  @keyframes loader-progress{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
+  @media(prefers-reduced-motion:reduce){.page-loader,.loader-logo,.loader-ring,.loader-progress:after{animation:none!important;transition:none!important}.loader-progress:after{width:100%;transform:none}}
+
 </head>
 <body>
+
+  <div class="page-loader" id="page-loader" role="status" aria-live="polite" aria-label="Loading Pandaman Wellness">
+    <div class="loader-content">
+      <div class="loader-logo-wrap"><span class="loader-ring" aria-hidden="true"></span><img class="loader-logo" src="assets/pandaman-logo.png" alt=""></div>
+      <div class="loader-title">PANDAMAN WELLNESS</div>
+      <div class="loader-caption">Getting everything ready for you</div>
+      <div class="loader-progress" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const loader = document.getElementById('page-loader');
+      if (!loader) return;
+      const startedAt = Date.now();
+      let finished = false;
+      loader.classList.add('is-visible');
+      const hideLoader = () => {
+        if (finished) return;
+        finished = true;
+        const remaining = Math.max(0, 650 - (Date.now() - startedAt));
+        window.setTimeout(() => {
+          loader.classList.add('is-leaving');
+          window.setTimeout(() => loader.remove(), 500);
+        }, remaining);
+      };
+      if (document.readyState === 'complete') hideLoader();
+      else window.addEventListener('load', hideLoader, { once: true });
+      window.setTimeout(hideLoader, 6500);
+    })();
+  </script>
+
   <div class="container">
     <header class="topbar">
       <a class="brand" href="index.html">🐼 Pandaman Wellness</a>

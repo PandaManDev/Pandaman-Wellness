@@ -1,0 +1,1 @@
+(()=>{const loader=document.querySelector('.page-loader');if(loader){const hide=()=>loader.classList.add('done');if(document.readyState==='complete')hide();else addEventListener('load',hide,{once:true});setTimeout(hide,4500)}document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear())})();

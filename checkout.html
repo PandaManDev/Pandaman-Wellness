@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#100b17"><meta name="robots" content="noindex"><title>Checkout | Pandaman Wellness</title><link rel="icon" href="assets/pandaman-logo.png"><link rel="apple-touch-icon" href="assets/pandaman-logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css"><script defer src="assets/site.js"></script><script defer src="assets/catalog.js"></script><script defer src="assets/cart.js"></script></head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap nav"><a class="brand" href="index.html"><img src="assets/pandaman-logo.png" alt=""><span>PANDAMAN WELLNESS<small>MAKE ROOM FOR WELL-BEING</small></span></a><nav class="site-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="products.html">Menu</a><a href="wellness.html">Wellness Guide</a><a href="weather.html">Weather</a><a href="clock.html">World Clock</a></nav></div></header>
+<main id="main" class="wrap">
+<section class="page-intro menu-intro"><div class="eyebrow">Almost there</div><h1>Your <em>order.</em></h1><p>Review your cart and tell us where to send it. You pay when you pick up or when it's delivered. No card needed online.</p></section>
+
+<div id="empty" class="panel" hidden><h2 style="margin-top:0">Your cart is empty.</h2><p class="lead">Add a few things from the menu first.</p><a class="btn" href="products.html">Browse the menu</a></div>
+
+<div id="done" class="panel done" hidden tabindex="-1"><h2 style="margin-top:0">Order received.</h2><p class="lead" style="margin-inline:auto">Thanks, <span id="done-name"></span>. We'll reach out to confirm availability and timing.</p><div class="ref" id="done-ref"></div><p id="done-note" class="meta"></p><a class="btn" href="products.html">Back to the menu</a></div>
+
+<div id="checkout" class="checkout" hidden>
+  <section class="panel" aria-labelledby="cart-h"><h2 id="cart-h" style="margin-top:0">Cart</h2><div id="lines"></div>
+    <div class="sum" id="sum"></div>
+    <p class="note" id="min-note" hidden></p>
+  </section>
+
+  <form id="form" class="panel form-grid" novalidate aria-labelledby="det-h">
+    <h2 id="det-h" style="margin:0">Your details</h2>
+    <div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" maxlength="120" required><span class="err" id="e-name" role="alert"></span></div>
+    <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="30" required><span class="err" id="e-phone" role="alert"></span></div>
+    <div class="field"><label for="email">Email <small>(optional)</small></label><input id="email" name="email" type="email" autocomplete="email" maxlength="120"><span class="err" id="e-email" role="alert"></span></div>
+    <fieldset class="field seg"><legend>How do you want it?</legend>
+      <label><input type="radio" name="ful" value="pickup" checked> Pickup</label>
+      <label><input type="radio" name="ful" value="delivery"> Delivery</label>
+    </fieldset>
+    <div class="field" id="addr-wrap" hidden><label for="addr">Delivery address</label><input id="addr" name="addr" autocomplete="street-address" maxlength="250"><span class="err" id="e-addr" role="alert"></span></div>
+    <div class="field"><label for="when">Preferred time <small>(optional)</small></label><input id="when" name="when" maxlength="80" placeholder="e.g. today after 5pm"></div>
+    <div class="field"><label for="notes">Notes <small>(optional)</small></label><textarea id="notes" name="notes" rows="3" maxlength="500"></textarea></div>
+    <div class="hp" aria-hidden="true"><label>Leave blank<input id="site" name="site" tabindex="-1" autocomplete="off"></label></div>
+    <label class="check"><input type="checkbox" id="age" required> <span id="age-label"></span></label><span class="err" id="e-age" role="alert"></span>
+    <p class="meta" id="fulfil-note"></p>
+    <button class="btn" id="submit" type="submit">Place order</button>
+    <p class="err" id="e-form" role="alert"></p>
+    <div id="fallback" hidden><p class="meta">Couldn't send it automatically. Copy the order and text or email it to us:</p><button class="btn secondary" id="copy" type="button">Copy order</button></div>
+  </form>
+</div>
+</main>
+<footer class="footer"><div class="wrap footer-inner"><div class="footer-brand"><img src="assets/pandaman-logo.png" alt=""> Pandaman Wellness · <span data-year></span></div><span>Everyday well-being, one small step at a time.</span></div></footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const SB_URL = 'https://rilcamphpjcaebajquyo.supabase.co';
+  const SB_KEY = 'sb_publishable_XkhO-mTjYgsB5ClCixI1qw_QYL534pV'; // public by design; RLS limits it to inserts
+  const C = window.Cart, cfg = C.cfg, $ = id => document.getElementById(id);
+  const ful = () => document.querySelector('input[name=ful]:checked').value;
+  let sending = false, lastText = '';
+
+  $('age-label').textContent = `I'm ${cfg.minAge} or older and will show valid government photo ID.`;
+
+  function render() {
+    const lines = C.lines(), empty = !lines.length;
+    if (!$('done').hidden) return;
+    $('empty').hidden = !empty; $('checkout').hidden = empty;
+    if (empty) return;
+    $('lines').replaceChildren(...lines.map(({ p, qty, total }) => {
+      const row = document.createElement('div'); row.className = 'cart-line';
+      const info = document.createElement('div');
+      const h = document.createElement('h3'); h.textContent = p.name;
+      const m = document.createElement('div'); m.className = 'meta'; m.textContent = `${p.unit || ''} · ${C.money(p.price)} each`;
+      const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'link-btn'; rm.textContent = 'Remove'; rm.onclick = () => C.remove(p.id);
+      info.append(h, m, rm);
+      const q = document.createElement('div'); q.className = 'qty';
+      const minus = document.createElement('button'); minus.type = 'button'; minus.textContent = '−'; minus.setAttribute('aria-label', `Fewer ${p.name}`); minus.onclick = () => C.set(p.id, qty - 1);
+      const out = document.createElement('output'); out.textContent = qty;
+      const plus = document.createElement('button'); plus.type = 'button'; plus.textContent = '+'; plus.setAttribute('aria-label', `More ${p.name}`); plus.disabled = qty >= cfg.maxPerItem; plus.onclick = () => C.set(p.id, qty + 1);
+      q.append(minus, out, plus);
+      const t = document.createElement('strong'); t.textContent = C.money(total);
+      row.append(info, q, t); return row;
+    }));
+    const t = C.totals(ful()), rows = [['Subtotal', t.subtotal]];
+    if (t.delivery) rows.push(['Delivery fee', t.delivery]);
+    if (cfg.taxRate) rows.push(['Tax', t.tax]);
+    rows.push(['Total (pay at ' + (ful() === 'delivery' ? 'delivery' : 'pickup') + ')', t.total]);
+    $('sum').replaceChildren(...rows.map(([k, v], i) => { const d = document.createElement('div'); if (i === rows.length - 1) d.className = 'grand'; const a = document.createElement('span'); a.textContent = k; const b = document.createElement('span'); b.textContent = C.money(v); d.append(a, b); return d; }));
+    const short = cfg.minOrder && t.subtotal < cfg.minOrder;
+    $('min-note').hidden = !short; if (short) $('min-note').textContent = `Minimum order is ${C.money(cfg.minOrder)}.`;
+    $('submit').disabled = !!short || sending;
+    $('addr-wrap').hidden = ful() !== 'delivery';
+    $('fulfil-note').textContent = ful() === 'delivery' ? cfg.deliveryNote : cfg.pickupNote;
+  }
+  document.getElementById('form').addEventListener('input', e => { const n = document.getElementById('e-' + (e.target.id === 'age' ? 'age' : e.target.id)); if (n) n.textContent = ''; });
+  document.addEventListener('cart:change', render);
+  document.querySelectorAll('input[name=ful]').forEach(r => r.addEventListener('change', render));
+  render();
+
+  const setErr = (id, msg) => { $(id).textContent = msg || ''; return !msg; };
+  function validate() {
+    const name = $('name').value.trim(), phone = $('phone').value.trim(), email = $('email').value.trim(), addr = $('addr').value.trim();
+    let ok = true;
+    ok = setErr('e-name', name ? '' : 'Enter your name.') && ok;
+    ok = setErr('e-phone', phone.replace(/\D/g, '').length >= 10 ? '' : 'Enter a phone number we can reach.') && ok;
+    ok = setErr('e-email', !email || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) ? '' : 'That email looks off.') && ok;
+    ok = setErr('e-addr', ful() === 'pickup' || addr ? '' : 'Enter a delivery address.') && ok;
+    ok = setErr('e-age', $('age').checked ? '' : `You must be ${cfg.minAge}+ to order.`) && ok;
+    return ok;
+  }
+
+  function buildOrder(ref) {
+    const t = C.totals(ful()), L = [];
+    L.push(`ORDER ${ref}`, `Fulfillment: ${ful() === 'delivery' ? 'Delivery' : 'Pickup'}`);
+    if (ful() === 'delivery') L.push(`Address: ${$('addr').value.trim()}`);
+    if ($('when').value.trim()) L.push(`Preferred time: ${$('when').value.trim()}`);
+    L.push('Items:');
+    C.lines().forEach(l => L.push(`- ${l.qty} x ${l.p.name} (${l.p.unit || 'each'}) @ ${C.money(l.p.price)} = ${C.money(l.total)}`));
+    L.push(`Subtotal: ${C.money(t.subtotal)}`);
+    if (t.delivery) L.push(`Delivery fee: ${C.money(t.delivery)}`);
+    if (cfg.taxRate) L.push(`Tax: ${C.money(t.tax)}`);
+    L.push(`TOTAL DUE: ${C.money(t.total)} (pay at ${ful() === 'delivery' ? 'delivery' : 'pickup'})`);
+    L.push(`Customer confirmed ${cfg.minAge}+; ID check at handoff.`);
+    if ($('email').value.trim()) L.push(`Email: ${$('email').value.trim()}`);
+    if ($('notes').value.trim()) L.push(`Notes: ${$('notes').value.trim()}`);
+    return L.join('\n');
+  }
+
+  $('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (sending || !C.count()) return;
+    $('e-form').textContent = ''; $('fallback').hidden = true;
+    if (!validate()) return;
+    if ($('site').value) { C.clear(); return; } // honeypot tripped: silently drop
+    const ref = 'PW-' + Date.now().toString(36).toUpperCase().slice(-5) + Math.random().toString(36).toUpperCase().slice(2, 4);
+    const name = $('name').value.trim();
+    lastText = buildOrder(ref);
+    sending = true; $('submit').disabled = true; $('submit').textContent = 'Sending…';
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/orders', {
+        method: 'POST',
+        headers: { apikey: SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ customer_name: name, customer_contact: ($('phone').value.trim() + ($('email').value.trim() ? ' / ' + $('email').value.trim() : '')).slice(0, 200), details: lastText.slice(0, 5000) })
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      C.clear();
+      $('done').hidden = false; $('checkout').hidden = true; $('empty').hidden = true;
+      $('done-name').textContent = name.split(' ')[0]; $('done-ref').textContent = ref;
+      $('done-note').textContent = (cfg.storePhone ? `Questions? Call or text ${cfg.storePhone}. ` : '') + (ful() === 'delivery' ? cfg.deliveryNote : cfg.pickupNote);
+      $('done').focus(); window.scrollTo({ top: 0 });
+    } catch {
+      $('e-form').textContent = 'Something went wrong sending your order.';
+      $('fallback').hidden = false;
+    } finally { sending = false; $('submit').textContent = 'Place order'; $('submit').disabled = false; }
+  });
+
+  $('copy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(lastText); $('copy').textContent = 'Copied'; } catch { $('copy').textContent = 'Copy failed. Select manually'; }
+  });
+});
+</script>
+</body></html>
